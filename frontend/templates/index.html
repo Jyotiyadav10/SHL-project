@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHL Assessment Recommendation System</title>
+    <link rel="stylesheet" href="/statics/style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>SHL Assessment Recommender</h1>
+
+    <label><strong>Enter Job Description or Query:</strong></label>
+    <textarea id="inputText" placeholder="Type your query here..."></textarea>
+    <button onclick="getRecommendations()">Get Recommendations</button>
+
+    <div class="loader" id="loader">⏳ Fetching recommendations...</div>
+
+    <table id="resultsTable" style="display:none;">
+        <thead>
+            <tr>
+                <th>Assessment Name</th>
+                <th>URL</th>
+                <th>Category</th>
+                <th>Test Type</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+
+<script>
+async function getRecommendations() {
+    const query = document.getElementById("inputText").value.trim();
+    if (!query) {
+        alert("Please enter a query.");
+        return;
+    }
+
+    document.getElementById("loader").style.display = "block";
+    document.getElementById("resultsTable").style.display = "none";
+
+    const response = await fetch("http://127.0.0.1:8000/recommend", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            text: query,
+            top_k: 10
+        })
+    });
+
+    const data = await response.json();
+
+    const table = document.getElementById("resultsTable");
+    const tbody = table.querySelector("tbody");
+    tbody.innerHTML = "";
+
+    data.recommendations.forEach(rec => {
+        let row = `<tr>
+            <td>${rec.name}</td>
+            <td><a href="${rec.url}" target="_blank">${rec.url}</a></td>
+            <td>${rec.category}</td>
+            <td>${rec.test_type}</td>
+        </tr>`;
+        tbody.innerHTML += row;
+    });
+
+    document.getElementById("loader").style.display = "none";
+    table.style.display = "table";
+}
+</script>
+
+</body>
+</html>
