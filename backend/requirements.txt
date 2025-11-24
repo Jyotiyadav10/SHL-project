@@ -6,3 +6,4 @@ flask
 openpyxl
 uvicorn
 gunicorn
+fastapi
