@@ -8,3 +8,5 @@ numpy
 scikit-learn
 openpyxl
 joblib
+sentence-transformers
+torch
