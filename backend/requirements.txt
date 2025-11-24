@@ -5,3 +5,4 @@ scikit-learn
 flask
 openpyxl
 uvicorn
+gunicorn
