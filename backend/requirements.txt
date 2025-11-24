@@ -1,9 +1,10 @@
 requests
 beautifulsoup4
 pandas
+numpy
 scikit-learn
 flask
 openpyxl
-uvicorn
 gunicorn
-fastapi
+uvicorn
+joblib
